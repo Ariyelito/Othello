@@ -1,16 +1,46 @@
-# This is a sample Python script.
+from ctypes import sizeof
+from textwrap import fill
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import pygame
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from pygame.draw import rect
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+WHITE = (200, 200, 200)
+pygame.init()
+screen = pygame.display.set_mode((500, 500))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+grid = [[1] * 8 for n in range(8)]
+grid[0][0] = 1
+grid[7][7] = 1
+
+print(grid)
+
+w = 70  # width of each cell
+
+
+def setup():
+    sizeof(800, 600)
+
+
+def draw():
+    x, y = 0, 0  # starting position
+
+    for row in grid:
+        for col in row:
+            if col == 1:
+                fill(250, 0, 0)
+            else:
+                fill(255)
+            rect(x, y, w, w)
+            x = x + w  # move right
+        y = y + w  # move down
+        x = 0  # rest to left edge
+
+
+def mousePressed():
+   pass
+    # integer division is good here!
+
+
+pygame.quit()
