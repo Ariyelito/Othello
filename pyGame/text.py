@@ -20,8 +20,9 @@ while running:
     screen.fill(BLANC)
 
     img = font.render("Bonjour!", True, ROUGE)
+    rect = img.get_rect()
+    pygame.draw.rect(img, BLEU, rect, 1)
     screen.blit(img, (20, 20))
-
     pygame.display.flip()
 
 pygame.quit()
