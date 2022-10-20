@@ -1,18 +1,9 @@
-# Flippy (an Othello or Reversi clone)
-# By Al Sweigart al@inventwithpython.com
-# http://inventwithpython.com/pygame
-# Released under a "Simplified BSD" license
-
-# Based on the "reversi.py" code that originally appeared in "Invent
-# Your Own Computer Games with Python", chapter 15:
-#   http://inventwithpython.com/chapter15.html
-
 import random, sys, pygame, time, copy
 from pygame.locals import *
 
 turn = ' '
 
-FPS = 10 # frames per second to update the screen
+FPS = 60 # frames per second to update the screen
 WINDOWWIDTH = 640 # width of the program's window, in pixels
 WINDOWHEIGHT = 480 # height in pixels
 SPACESIZE = 50 # width & height of each space on the board, in pixels
@@ -49,17 +40,17 @@ def main():
     pygame.init()
     MAINCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-    pygame.display.set_caption('Flippy')
+    pygame.display.set_caption('Simple Orthello')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
     BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
 
     # Set up the background image.
-    boardImage = pygame.image.load('flippyboard.png')
+    boardImage = pygame.image.load('board.png')
     # Use smoothscale() to stretch the board image to fit the entire board:
     boardImage = pygame.transform.smoothscale(boardImage, (BOARDWIDTH * SPACESIZE, BOARDHEIGHT * SPACESIZE))
     boardImageRect = boardImage.get_rect()
     boardImageRect.topleft = (XMARGIN, YMARGIN)
-    BGIMAGE = pygame.image.load('flippybackground.png')
+    BGIMAGE = pygame.image.load('background.png')
     # Use smoothscale() to stretch the background image to fit the entire window:
     BGIMAGE = pygame.transform.smoothscale(BGIMAGE, (WINDOWWIDTH, WINDOWHEIGHT))
     BGIMAGE.blit(boardImage, boardImageRect)
