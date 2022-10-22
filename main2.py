@@ -38,9 +38,10 @@ def main():
 
 def Jouerjeu():
     global tour
+    global tableauPrincipal
     tableauPrincipal = getNouveauTableau()
     razTableau(tableauPrincipal)
-    dessinerTableau(tableauPrincipal)
+    dessinerTableau()
 
     tuileJoueur, tuileOrdi = qui_commence()
 
@@ -64,7 +65,7 @@ def Jouerjeu():
                         if movexy != None and not isValidMove(tableauPrincipal, tuileJoueur, movexy[0], movexy[1]):
                             movexy = None
 
-                dessinerTableau(tableauPrincipal)
+                dessinerTableau()
                 ecran.blit(newGameSurf, newGameRect)
                 MAINCLOCK.tick(60)
                 pygame.display.update()
@@ -75,7 +76,7 @@ def Jouerjeu():
         else:
             if getMouvementValide(tableauPrincipal, tuileOrdi) == []:
                 break
-            dessinerTableau(tableauPrincipal)
+            dessinerTableau()
             ecran.blit(newGameSurf, newGameRect)
             pauseUntil = time.time() + random.randint(5, 15) * 0.1
             while time.time() < pauseUntil:
@@ -85,7 +86,7 @@ def Jouerjeu():
             if getMouvementValide(tableauPrincipal, tuileJoueur) != []:
                 tour = 'joueur'
 
-    dessinerTableau(tableauPrincipal)
+    dessinerTableau()
     scores = scoreTableau(tableauPrincipal)
 
     if scores[tuileJoueur] > scores[tuileOrdi]:
@@ -129,6 +130,52 @@ def Jouerjeu():
         ecran.blit(non, nonRect)
         pygame.display.update()
         MAINCLOCK.tick(60)
+
+
+def getNouveauTableau():
+    tableau = []
+    for i in range(8):
+        tableau.append([VIDE] * 8)
+    return tableau
+
+
+def razTableau(grille):
+    for x in range(8):
+        for y in range(8):
+            grille[x][y] = VIDE
+
+    grille[3][3] = TUILE_BLANCHE
+    grille[3][4] = TUILE_NOIRE
+    grille[4][3] = TUILE_NOIRE
+    grille[4][4] = TUILE_BLANCHE
+
+
+def dessinerTableau():
+    ecran.blit(BACKGROUND, BACKGROUND.get_rect())
+
+    for x in range(8 + 1):
+        startx = (x * 50) + 120
+        starty = 120
+        endx = (x * 50) + 120
+        endy = 120 + (8 * 50)
+        pygame.draw.line(ecran, NOIR, (startx, starty), (endx, endy))
+
+    for y in range(8 + 1):
+        startx = 120
+        starty = (y * 50) + 120
+        endx = 120 + (8 * 50)
+        endy = (y * 50) + 120
+        pygame.draw.line(ecran, NOIR, (startx, starty), (endx, endy))
+
+    for x in range(8):
+        for y in range(8):
+            centerx, centery = 120 + x * 50 + int(50 / 2), 120 + y * 50 + int(50 / 2)
+            if tableauPrincipal[x][y] == TUILE_BLANCHE or tableauPrincipal[x][y] == TUILE_NOIRE:
+                if tableauPrincipal[x][y] == TUILE_BLANCHE:
+                    tileColor = BLANC
+                else:
+                    tileColor = NOIR
+                pygame.draw.circle(ecran, tileColor, (centerx, centery), int(50 / 2) - 4)
 
 
 def scoreTableau(grille):
@@ -187,13 +234,6 @@ def animationChangementTuile(tuileFlip, tuileCouleur, autreTuile):
         checkForQuit()
 
 
-def getNouveauTableau():
-    tableau = []
-    for i in range(8):
-        tableau.append([VIDE] * 8)
-    return tableau
-
-
 def getMouvementValide(grille, tuile):
     validMoves = []
     for x in range(8):
@@ -250,45 +290,6 @@ def isValidMove(grille, tuile, x, y):
 
 def isOnBoard(x, y):
     return x >= 0 and x < 8 and y >= 0 and y < 8
-
-
-def razTableau(grille):
-    for x in range(8):
-        for y in range(8):
-            grille[x][y] = VIDE
-
-    grille[3][3] = TUILE_BLANCHE
-    grille[3][4] = TUILE_NOIRE
-    grille[4][3] = TUILE_NOIRE
-    grille[4][4] = TUILE_BLANCHE
-
-
-def dessinerTableau(grille):
-    ecran.blit(BACKGROUND, BACKGROUND.get_rect())
-
-    for x in range(8 + 1):
-        startx = (x * 50) + 120
-        starty = 120
-        endx = (x * 50) + 120
-        endy = 120 + (8 * 50)
-        pygame.draw.line(ecran, NOIR, (startx, starty), (endx, endy))
-
-    for y in range(8 + 1):
-        startx = 120
-        starty = (y * 50) + 120
-        endx = 120 + (8 * 50)
-        endy = (y * 50) + 120
-        pygame.draw.line(ecran, NOIR, (startx, starty), (endx, endy))
-
-    for x in range(8):
-        for y in range(8):
-            centerx, centery = 120 + x * 50 + int(50 / 2), 120 + y * 50 + int(50 / 2)
-            if grille[x][y] == TUILE_BLANCHE or grille[x][y] == TUILE_NOIRE:
-                if grille[x][y] == TUILE_BLANCHE:
-                    tileColor = BLANC
-                else:
-                    tileColor = NOIR
-                pygame.draw.circle(ecran, tileColor, (centerx, centery), int(50 / 2) - 4)
 
 
 def qui_commence():
