@@ -6,14 +6,12 @@ tour = ' '
 VIDE = "VIDE"
 TUILE_NOIRE = "NOIRE"
 TUILE_BLANCHE = "BLANCHE"
-HAUTEUR = 640
-LARGEUR = 640
-ecran = pygame.display.set_mode((HAUTEUR,LARGEUR))
-
+LARG = 640
+HAUT = 640
+ecran = pygame.display.set_mode((LARG, HAUT))
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
 VERT = (0, 155, 0)
-
 
 def main():
     global BACKGROUND, FONT, MAINCLOCK, Font2
@@ -29,7 +27,7 @@ def main():
     boardImageRect = boardImage.get_rect()
     boardImageRect.topleft = (120, 120)
 
-    BACKGROUND = pygame.transform.smoothscale(BACKGROUND, (HAUTEUR, LARGEUR))
+    BACKGROUND = pygame.transform.smoothscale(BACKGROUND, (LARG, HAUT))
     BACKGROUND.blit(boardImage, boardImageRect)
 
     while True:
@@ -47,7 +45,7 @@ def Jouerjeu():
 
     newGameSurf = FONT.render('Nouvelle Partie', True, BLANC, VERT)
     newGameRect = newGameSurf.get_rect()
-    newGameRect.topright = (HAUTEUR - 8, 10)
+    newGameRect.topright = (LARG - 8, 10)
 
     while True:
         if tour == 'joueur':
@@ -100,20 +98,20 @@ def Jouerjeu():
 
     text = FONT.render(text, True, BLANC, VERT)
     textRect = text.get_rect()
-    textRect.center = (int(HAUTEUR / 2), int(LARGEUR / 2))
+    textRect.center = (int(LARG / 2), int(HAUT / 2))
     ecran.blit(text, textRect)
 
     text2 = Font2.render('Jouer encore', True, BLANC, VERT)
     text2Rect = text2.get_rect()
-    text2Rect.center = (int(HAUTEUR / 2), int(LARGEUR / 2) + 50)
+    text2Rect.center = (int(LARG / 2), int(HAUT / 2) + 50)
 
     oui = Font2.render('oui', True, BLANC, VERT)
     ouiRect = oui.get_rect()
-    ouiRect.center = (int(HAUTEUR / 2) - 60, int(LARGEUR / 2) + 90)
+    ouiRect.center = (int(LARG / 2) - 60, int(HAUT / 2) + 90)
 
     non = Font2.render('non', True, BLANC, VERT)
     nonRect = non.get_rect()
-    nonRect.center = (int(HAUTEUR / 2) + 60, int(LARGEUR / 2) + 90)
+    nonRect.center = (int(LARG / 2) + 60, int(HAUT / 2) + 90)
 
     while True:
         checkForQuit()
@@ -184,15 +182,15 @@ def qui_commence():
 
     textSurf = FONT.render('Voulez-vous commencer?  [Oui : NOIR, Non : BLANC]', True, BLANC, VERT)
     textRect = textSurf.get_rect()
-    textRect.center = (int(HAUTEUR / 2), int(LARGEUR / 2))
+    textRect.center = (int(LARG / 2), int(HAUT / 2))
 
     xSurf = BIGFONT.render('OUI', True, BLANC, VERT)
     xRect = xSurf.get_rect()
-    xRect.center = (int(HAUTEUR / 2) - 60, int(LARGEUR / 2) + 40)
+    xRect.center = (int(LARG / 2) - 60, int(HAUT / 2) + 40)
 
     oSurf = BIGFONT.render('NON', True, BLANC, VERT)
     oRect = oSurf.get_rect()
-    oRect.center = (int(HAUTEUR / 2) + 60, int(LARGEUR / 2) + 40)
+    oRect.center = (int(LARG / 2) + 60, int(HAUT / 2) + 40)
 
     while True:
 
