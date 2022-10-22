@@ -47,7 +47,7 @@ def Jouerjeu():
 
     newGameSurf = FONT.render('Nouvelle Partie', True, BLANC, VERT)
     newGameRect = newGameSurf.get_rect()
-    newGameRect.topright = (640 - 8, 10)
+    newGameRect.topright = (HAUTEUR - 8, 10)
 
     while True:
         if tour == 'joueur':
@@ -100,20 +100,20 @@ def Jouerjeu():
 
     text = FONT.render(text, True, BLANC, VERT)
     textRect = text.get_rect()
-    textRect.center = (int(640 / 2), int(640 / 2))
+    textRect.center = (int(HAUTEUR / 2), int(LARGEUR / 2))
     ecran.blit(text, textRect)
 
     text2 = Font2.render('Jouer encore', True, BLANC, VERT)
     text2Rect = text2.get_rect()
-    text2Rect.center = (int(640 / 2), int(640 / 2) + 50)
+    text2Rect.center = (int(HAUTEUR / 2), int(LARGEUR / 2) + 50)
 
     oui = Font2.render('oui', True, BLANC, VERT)
     ouiRect = oui.get_rect()
-    ouiRect.center = (int(640 / 2) - 60, int(640 / 2) + 90)
+    ouiRect.center = (int(HAUTEUR / 2) - 60, int(LARGEUR / 2) + 90)
 
     non = Font2.render('non', True, BLANC, VERT)
     nonRect = non.get_rect()
-    nonRect.center = (int(640 / 2) + 60, int(640 / 2) + 90)
+    nonRect.center = (int(HAUTEUR / 2) + 60, int(LARGEUR / 2) + 90)
 
     while True:
         checkForQuit()
@@ -188,11 +188,11 @@ def qui_commence():
 
     xSurf = BIGFONT.render('OUI', True, BLANC, VERT)
     xRect = xSurf.get_rect()
-    xRect.center = (int(640 / 2) - 60, int(640 / 2) + 40)
+    xRect.center = (int(HAUTEUR / 2) - 60, int(LARGEUR / 2) + 40)
 
     oSurf = BIGFONT.render('NON', True, BLANC, VERT)
     oRect = oSurf.get_rect()
-    oRect.center = (int(640 / 2) + 60, int(640 / 2) + 40)
+    oRect.center = (int(HAUTEUR / 2) + 60, int(LARGEUR / 2) + 40)
 
     while True:
 
