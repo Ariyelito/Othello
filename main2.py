@@ -56,8 +56,6 @@ def Jouerjeu():
                 break
             movexy = None
             while movexy == None:
-
-                boardToDraw = tableauPrincipal
                 checkForQuit()
                 for event in pygame.event.get(): 
                     if event.type == MOUSEBUTTONUP:
@@ -94,7 +92,7 @@ def Jouerjeu():
                 faireMouvement(tableauPrincipal, tuileOrdi, x, y, True)
                 if getMouvementValide(tableauPrincipal, tuileJoueur) != []:
                   
-                    turn = 'joueur'
+                    tour = 'joueur'
 
     dessinerTableau(tableauPrincipal)
     scores = scoreTableau(tableauPrincipal)
