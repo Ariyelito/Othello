@@ -42,6 +42,8 @@ def Jouerjeu():
     razTableau(tableauPrincipal)
     dessinerTableau()
     tuileJoueur, tuileOrdi = qui_commence()
+    print('joueur: ' + tuileJoueur)
+    print('ordi: ' +tuileOrdi)
 
     newGameSurf = FONT.render('Nouvelle Partie', True, BLANC, VERT)
     newGameRect = newGameSurf.get_rect()
@@ -193,20 +195,21 @@ def qui_commence():
     oRect.center = (int(LARG / 2) + 60, int(HAUT / 2) + 250)
 
     while True:
-
+    # Loop jusqu'à décision du joueur.
         checkForQuit()
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
                 mousex, mousey = event.pos
                 if xRect.collidepoint((mousex, mousey)):
                     tour = 'joueur'
-
+                    print('Le joueur commence!')
                     return [TUILE_NOIRE, TUILE_BLANCHE]
                 elif oRect.collidepoint((mousex, mousey)):
                     tour = 'ordi'
+                    print("L'ordi commence!")
                     return [TUILE_BLANCHE, TUILE_NOIRE]
 
-        print(tour)
+        # print(tour)
         ecran.blit(textSurf, textRect)
         ecran.blit(xSurf, xRect)
         ecran.blit(oSurf, oRect)
