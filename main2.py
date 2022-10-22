@@ -1,4 +1,3 @@
-
 from msilib.schema import Font
 import random, sys, pygame, time, copy
 from pygame.locals import *
@@ -10,25 +9,26 @@ TUILE_BLANCHE = "BLANCHE"
 
 ecran = pygame.display.set_mode((640, 640))
 
-BLANC     = (255, 255, 255)
-NOIR      = (  0,   0,   0)
-VERT      = (  0, 155,   0)
+BLANC = (255, 255, 255)
+NOIR = (0, 0, 0)
+VERT = (0, 155, 0)
+
 
 def main():
-    global BGIMAGE,FONT, MAINCLOCK,Font2
+    global BGIMAGE, FONT, MAINCLOCK, Font2
     pygame.init()
-    
+
     MAINCLOCK = pygame.time.Clock()
     BGIMAGE = pygame.image.load('background.png')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
     Font2 = pygame.font.Font('freesansbold.ttf', 32)
-    
+
     boardImage = pygame.image.load('board.png')
     boardImage = pygame.transform.smoothscale(boardImage, (8 * 50, 8 * 50))
 
     boardImageRect = boardImage.get_rect()
     boardImageRect.topleft = (120, 120)
-    
+
     BGIMAGE = pygame.transform.smoothscale(BGIMAGE, (640, 640))
     BGIMAGE.blit(boardImage, boardImageRect)
 
@@ -38,12 +38,11 @@ def main():
 
 
 def Jouerjeu():
-
     global tour
-    tableauPrincipal = getNouveauTableau()    
+    tableauPrincipal = getNouveauTableau()
     razTableau(tableauPrincipal)
     dessinerTableau(tableauPrincipal)
-    
+
     tuileJoueur, tuileOrdi = qui_commence()
 
     newGameSurf = FONT.render('Nouvelle Partie', True, BLANC, VERT)
@@ -51,16 +50,16 @@ def Jouerjeu():
     newGameRect.topright = (640 - 8, 10)
 
     while True:
-        if tour == 'joueur': 
-            if getMouvementValide(tableauPrincipal, tuileJoueur) == []:     
+        if tour == 'joueur':
+            if getMouvementValide(tableauPrincipal, tuileJoueur) == []:
                 break
             movexy = None
             while movexy == None:
                 checkForQuit()
-                for event in pygame.event.get(): 
+                for event in pygame.event.get():
                     if event.type == MOUSEBUTTONUP:
                         mousex, mousey = event.pos
-                        if newGameRect.collidepoint( (mousex, mousey) ):
+                        if newGameRect.collidepoint((mousex, mousey)):
                             return True
                         movexy = getPosition(mousex, mousey)
                         if movexy != None and not isValidMove(tableauPrincipal, tuileJoueur, movexy[0], movexy[1]):
@@ -70,29 +69,28 @@ def Jouerjeu():
                 ecran.blit(newGameSurf, newGameRect)
                 MAINCLOCK.tick(60)
                 pygame.display.update()
-            
+
             faireMouvement(tableauPrincipal, tuileJoueur, movexy[0], movexy[1], True)
             if getMouvementValide(tableauPrincipal, tuileOrdi) != []:
                 tour = 'ordi'
 
         else:
-               
-                if getMouvementValide(tableauPrincipal, tuileOrdi) == []:
-                    break
 
-                dessinerTableau(tableauPrincipal)
+            if getMouvementValide(tableauPrincipal, tuileOrdi) == []:
+                break
 
-                ecran.blit(newGameSurf, newGameRect)
-               
-                pauseUntil = time.time() + random.randint(5, 15) * 0.1
-                while time.time() < pauseUntil:
-                    pygame.display.update()
+            dessinerTableau(tableauPrincipal)
 
-                x, y = ordiMouvement(tableauPrincipal, tuileOrdi)
-                faireMouvement(tableauPrincipal, tuileOrdi, x, y, True)
-                if getMouvementValide(tableauPrincipal, tuileJoueur) != []:
-                  
-                    tour = 'joueur'
+            ecran.blit(newGameSurf, newGameRect)
+
+            pauseUntil = time.time() + random.randint(5, 15) * 0.1
+            while time.time() < pauseUntil:
+                pygame.display.update()
+
+            x, y = ordiMouvement(tableauPrincipal, tuileOrdi)
+            faireMouvement(tableauPrincipal, tuileOrdi, x, y, True)
+            if getMouvementValide(tableauPrincipal, tuileJoueur) != []:
+                tour = 'joueur'
 
     dessinerTableau(tableauPrincipal)
     scores = scoreTableau(tableauPrincipal)
@@ -128,9 +126,9 @@ def Jouerjeu():
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
                 mousex, mousey = event.pos
-                if ouiRect.collidepoint( (mousex, mousey) ):
+                if ouiRect.collidepoint((mousex, mousey)):
                     return True
-                elif nonRect.collidepoint( (mousex, mousey) ):
+                elif nonRect.collidepoint((mousex, mousey)):
                     return False
         ecran.blit(text, textRect)
         ecran.blit(text2, text2Rect)
@@ -149,11 +147,10 @@ def scoreTableau(grille):
                 xscore += 1
             if grille[x][y] == TUILE_NOIRE:
                 oscore += 1
-    return {TUILE_BLANCHE:xscore, TUILE_NOIRE:oscore}
+    return {TUILE_BLANCHE: xscore, TUILE_NOIRE: oscore}
 
 
 def faireMouvement(grille, tuile, x, y, mouvement=False):
-   
     tilesToFlip = isValidMove(grille, tuile, x, y)
 
     if tilesToFlip == False:
@@ -170,7 +167,6 @@ def faireMouvement(grille, tuile, x, y, mouvement=False):
 
 
 def animationChangementTuile(tuileFlip, tuileCouleur, autreTuile):
-
     if tuileCouleur == TUILE_BLANCHE:
         additionalTileColor = BLANC
     else:
@@ -215,11 +211,10 @@ def getMouvementValide(grille, tuile):
 
 
 def isValidMove(grille, tuile, x, y):
-   
     if grille[x][y] != VIDE or not isOnBoard(x, y):
         return False
 
-    grille[x][y] = tuile 
+    grille[x][y] = tuile
 
     if tuile == TUILE_BLANCHE:
         autreTuile = TUILE_NOIRE
@@ -227,13 +222,13 @@ def isValidMove(grille, tuile, x, y):
         autreTuile = TUILE_BLANCHE
 
     tuileAretourner = []
-   
+
     for xdirection, ydirection in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]:
         x, y = x, y
         x += xdirection
         y += ydirection
         if isOnBoard(x, y) and grille[x][y] == autreTuile:
-           
+
             x += xdirection
             y += ydirection
             if not isOnBoard(x, y):
@@ -242,11 +237,11 @@ def isValidMove(grille, tuile, x, y):
                 x += xdirection
                 y += ydirection
                 if not isOnBoard(x, y):
-                    break 
+                    break
             if not isOnBoard(x, y):
                 continue
             if grille[x][y] == tuile:
-                
+
                 while True:
                     x -= xdirection
                     y -= ydirection
@@ -254,8 +249,8 @@ def isValidMove(grille, tuile, x, y):
                         break
                     tuileAretourner.append([x, y])
 
-    grille[x][y] = VIDE 
-    if len(tuileAretourner) == 0: 
+    grille[x][y] = VIDE
+    if len(tuileAretourner) == 0:
         return False
 
     return tuileAretourner
@@ -266,7 +261,6 @@ def isOnBoard(x, y):
 
 
 def razTableau(grille):
-
     for x in range(8):
         for y in range(8):
             grille[x][y] = VIDE
@@ -278,11 +272,9 @@ def razTableau(grille):
 
 
 def dessinerTableau(grille):
-
     ecran.blit(BGIMAGE, BGIMAGE.get_rect())
 
     for x in range(8 + 1):
-
         startx = (x * 50) + 120
         starty = 120
         endx = (x * 50) + 120
@@ -290,13 +282,11 @@ def dessinerTableau(grille):
         pygame.draw.line(ecran, NOIR, (startx, starty), (endx, endy))
 
     for y in range(8 + 1):
-
         startx = 120
         starty = (y * 50) + 120
         endx = 120 + (8 * 50)
         endy = (y * 50) + 120
         pygame.draw.line(ecran, NOIR, (startx, starty), (endx, endy))
-
 
     for x in range(8):
         for y in range(8):
@@ -328,14 +318,14 @@ def qui_commence():
     while True:
 
         checkForQuit()
-        for event in pygame.event.get(): 
+        for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
                 mousex, mousey = event.pos
-                if xRect.collidepoint( (mousex, mousey) ):
+                if xRect.collidepoint((mousex, mousey)):
                     tour = 'joueur'
-                    
+
                     return [TUILE_NOIRE, TUILE_BLANCHE]
-                elif oRect.collidepoint( (mousex, mousey) ):
+                elif oRect.collidepoint((mousex, mousey)):
                     tour = 'ordi'
                     return [TUILE_BLANCHE, TUILE_NOIRE]
 
@@ -351,15 +341,14 @@ def getPosition(mousex, mousey):
     for x in range(8):
         for y in range(8):
             if mousex > x * 50 + 120 and \
-               mousex < (x + 1) * 50 + 120 and \
-               mousey > y * 50 + 120 and \
-               mousey < (y + 1) * 50 + 120:
+                    mousex < (x + 1) * 50 + 120 and \
+                    mousey > y * 50 + 120 and \
+                    mousey < (y + 1) * 50 + 120:
                 return (x, y)
     return None
 
 
 def ordiMouvement(grille, tuileOrdi):
-
     possibleMoves = getMouvementValide(grille, tuileOrdi)
 
     random.shuffle(possibleMoves)
@@ -390,7 +379,7 @@ def checkForQuit():
     for event in pygame.event.get((QUIT, KEYUP)):
         if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
             pygame.quit()
-            sys.exit()  
+            sys.exit()
 
 
 if __name__ == '__main__':
