@@ -178,19 +178,19 @@ def dessinerTableau():
 
 def qui_commence():
     global tour
-    BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
+    BIGFONT = pygame.font.Font('freesansbold.ttf', 28)
 
-    textSurf = FONT.render('Voulez-vous commencer?  [Oui : NOIR, Non : BLANC]', True, BLANC, VERT)
+    textSurf = FONT.render('Voulez-vous commencer?  [Oui : NOIR, Non : BLANC]', True, BLANC, NOIR)
     textRect = textSurf.get_rect()
-    textRect.center = (int(LARG / 2), int(HAUT / 2))
+    textRect.center = (int(LARG / 2), int(HAUT / 2) + 220)
 
-    xSurf = BIGFONT.render('OUI', True, BLANC, VERT)
+    xSurf = BIGFONT.render('OUI', True, BLANC, NOIR)
     xRect = xSurf.get_rect()
-    xRect.center = (int(LARG / 2) - 60, int(HAUT / 2) + 40)
+    xRect.center = (int(LARG / 2) - 60, int(HAUT / 2) + 250)
 
-    oSurf = BIGFONT.render('NON', True, BLANC, VERT)
+    oSurf = BIGFONT.render('NON', True, BLANC, NOIR)
     oRect = oSurf.get_rect()
-    oRect.center = (int(LARG / 2) + 60, int(HAUT / 2) + 40)
+    oRect.center = (int(LARG / 2) + 60, int(HAUT / 2) + 250)
 
     while True:
 
