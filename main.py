@@ -18,7 +18,9 @@ ANIMATIONSPEED = 25 # integer from 1 to 100, higher is faster animation
 # Amount of space on the left & right side (XMARGIN) or above and below
 # (YMARGIN) the game board, in pixels.
 XMARGIN = int((WINDOWWIDTH - (BOARDWIDTH * SPACESIZE)) / 2)
+print(XMARGIN)
 YMARGIN = int((WINDOWHEIGHT - (BOARDHEIGHT * SPACESIZE)) / 2)
+print(YMARGIN)
 
 #              R    G    B
 WHITE      = (255, 255, 255)
