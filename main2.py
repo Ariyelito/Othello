@@ -15,11 +15,10 @@ VERT = (0, 155, 0)
 
 
 def main():
-    global BGIMAGE, FONT, MAINCLOCK, Font2
+    global BACKGROUND, FONT, MAINCLOCK, Font2
     pygame.init()
-
     MAINCLOCK = pygame.time.Clock()
-    BGIMAGE = pygame.image.load('background.png')
+    BACKGROUND = pygame.image.load('background.png')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
     Font2 = pygame.font.Font('freesansbold.ttf', 32)
 
@@ -29,8 +28,8 @@ def main():
     boardImageRect = boardImage.get_rect()
     boardImageRect.topleft = (120, 120)
 
-    BGIMAGE = pygame.transform.smoothscale(BGIMAGE, (640, 640))
-    BGIMAGE.blit(boardImage, boardImageRect)
+    BACKGROUND = pygame.transform.smoothscale(BACKGROUND, (640, 640))
+    BACKGROUND.blit(boardImage, boardImageRect)
 
     while True:
         if Jouerjeu() == False:
@@ -73,20 +72,14 @@ def Jouerjeu():
             faireMouvement(tableauPrincipal, tuileJoueur, movexy[0], movexy[1], True)
             if getMouvementValide(tableauPrincipal, tuileOrdi) != []:
                 tour = 'ordi'
-
         else:
-
             if getMouvementValide(tableauPrincipal, tuileOrdi) == []:
                 break
-
             dessinerTableau(tableauPrincipal)
-
             ecran.blit(newGameSurf, newGameRect)
-
             pauseUntil = time.time() + random.randint(5, 15) * 0.1
             while time.time() < pauseUntil:
                 pygame.display.update()
-
             x, y = ordiMouvement(tableauPrincipal, tuileOrdi)
             faireMouvement(tableauPrincipal, tuileOrdi, x, y, True)
             if getMouvementValide(tableauPrincipal, tuileJoueur) != []:
@@ -241,7 +234,6 @@ def isValidMove(grille, tuile, x, y):
             if not isOnBoard(x, y):
                 continue
             if grille[x][y] == tuile:
-
                 while True:
                     x -= xdirection
                     y -= ydirection
@@ -272,7 +264,7 @@ def razTableau(grille):
 
 
 def dessinerTableau(grille):
-    ecran.blit(BGIMAGE, BGIMAGE.get_rect())
+    ecran.blit(BACKGROUND, BACKGROUND.get_rect())
 
     for x in range(8 + 1):
         startx = (x * 50) + 120
