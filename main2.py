@@ -15,12 +15,13 @@ NOIR      = (  0,   0,   0)
 VERT      = (  0, 155,   0)
 
 def main():
-    global BGIMAGE,FONT, MAINCLOCK
+    global BGIMAGE,FONT, MAINCLOCK,Font2
     pygame.init()
     
     MAINCLOCK = pygame.time.Clock()
     BGIMAGE = pygame.image.load('background.png')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
+    Font2 = pygame.font.Font('freesansbold.ttf', 32)
     
     boardImage = pygame.image.load('board.png')
     boardImage = pygame.transform.smoothscale(boardImage, (8 * 50, 8 * 50))
@@ -76,6 +77,24 @@ def Jouerjeu():
             if getMouvementValide(tableauPrincipal, tuileOrdi) != []:
                 tour = 'ordi'
 
+        else:
+               
+                if getMouvementValide(tableauPrincipal, tuileOrdi) == []:
+                    break
+
+                dessinerTableau(tableauPrincipal)
+
+                ecran.blit(newGameSurf, newGameRect)
+               
+                pauseUntil = time.time() + random.randint(5, 15) * 0.1
+                while time.time() < pauseUntil:
+                    pygame.display.update()
+
+                x, y = ordiMouvement(tableauPrincipal, tuileOrdi)
+                faireMouvement(tableauPrincipal, tuileOrdi, x, y, True)
+                if getMouvementValide(tableauPrincipal, tuileJoueur) != []:
+                  
+                    turn = 'joueur'
 
     dessinerTableau(tableauPrincipal)
     scores = scoreTableau(tableauPrincipal)
@@ -89,36 +108,36 @@ def Jouerjeu():
     else:
         text = 'Partie Nul'
 
-    textSurf = FONT.render(text, True, BLANC, VERT)
-    textRect = textSurf.get_rect()
+    text = FONT.render(text, True, BLANC, VERT)
+    textRect = text.get_rect()
     textRect.center = (int(640 / 2), int(640 / 2))
-    ecran.blit(textSurf, textRect)
+    ecran.blit(text, textRect)
 
-    text2Surf = Font.render('Jouer encore', True, BLANC, VERT)
-    text2Rect = text2Surf.get_rect()
+    text2 = Font2.render('Jouer encore', True, BLANC, VERT)
+    text2Rect = text2.get_rect()
     text2Rect.center = (int(640 / 2), int(640 / 2) + 50)
 
-    yesSurf = Font.render('oui', True, BLANC, VERT)
-    yesRect = yesSurf.get_rect()
-    yesRect.center = (int(640 / 2) - 60, int(640 / 2) + 90)
+    oui = Font2.render('oui', True, BLANC, VERT)
+    ouiRect = oui.get_rect()
+    ouiRect.center = (int(640 / 2) - 60, int(640 / 2) + 90)
 
-    noSurf = Font.render('non', True, BLANC, VERT)
-    noRect = noSurf.get_rect()
-    noRect.center = (int(640 / 2) + 60, int(640 / 2) + 90)
+    non = Font2.render('non', True, BLANC, VERT)
+    nonRect = non.get_rect()
+    nonRect.center = (int(640 / 2) + 60, int(640 / 2) + 90)
 
     while True:
         checkForQuit()
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
                 mousex, mousey = event.pos
-                if yesRect.collidepoint( (mousex, mousey) ):
+                if ouiRect.collidepoint( (mousex, mousey) ):
                     return True
-                elif noRect.collidepoint( (mousex, mousey) ):
+                elif nonRect.collidepoint( (mousex, mousey) ):
                     return False
-        ecran.blit(textSurf, textRect)
-        ecran.blit(text2Surf, text2Rect)
-        ecran.blit(yesSurf, yesRect)
-        ecran.blit(noSurf, noRect)
+        ecran.blit(text, textRect)
+        ecran.blit(text2, text2Rect)
+        ecran.blit(oui, ouiRect)
+        ecran.blit(non, nonRect)
         pygame.display.update()
         MAINCLOCK.tick(60)
 
@@ -309,6 +328,7 @@ def qui_commence():
     oRect.center = (int(640 / 2) + 60, int(640 / 2) + 40)
 
     while True:
+
         checkForQuit()
         for event in pygame.event.get(): 
             if event.type == MOUSEBUTTONUP:
@@ -338,6 +358,34 @@ def getPosition(mousex, mousey):
                mousey < (y + 1) * 50 + 120:
                 return (x, y)
     return None
+
+
+def ordiMouvement(grille, tuileOrdi):
+
+    possibleMoves = getMouvementValide(grille, tuileOrdi)
+
+    random.shuffle(possibleMoves)
+
+    for x, y in possibleMoves:
+        if Corner(x, y):
+            return [x, y]
+
+    bestScore = -1
+    for x, y in possibleMoves:
+        dupeBoard = copy.deepcopy(grille)
+        faireMouvement(dupeBoard, tuileOrdi, x, y)
+        score = scoreTableau(dupeBoard)[tuileOrdi]
+        if score > bestScore:
+            bestMove = [x, y]
+            bestScore = score
+    return bestMove
+
+
+def Corner(x, y):
+    return (x == 0 and y == 0) or \
+           (x == 8 and y == 0) or \
+           (x == 0 and y == 8) or \
+           (x == 8 and y == 8)
 
 
 def checkForQuit():
