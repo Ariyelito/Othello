@@ -6,8 +6,9 @@ tour = ' '
 VIDE = "VIDE"
 TUILE_NOIRE = "NOIRE"
 TUILE_BLANCHE = "BLANCHE"
-
-ecran = pygame.display.set_mode((640, 640))
+HAUTEUR = 640
+LARGEUR = 640
+ecran = pygame.display.set_mode((HAUTEUR,LARGEUR))
 
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
@@ -28,7 +29,7 @@ def main():
     boardImageRect = boardImage.get_rect()
     boardImageRect.topleft = (120, 120)
 
-    BACKGROUND = pygame.transform.smoothscale(BACKGROUND, (640, 640))
+    BACKGROUND = pygame.transform.smoothscale(BACKGROUND, (HAUTEUR, LARGEUR))
     BACKGROUND.blit(boardImage, boardImageRect)
 
     while True:
@@ -42,7 +43,6 @@ def Jouerjeu():
     tableauPrincipal = getNouveauTableau()
     razTableau(tableauPrincipal)
     dessinerTableau()
-
     tuileJoueur, tuileOrdi = qui_commence()
 
     newGameSurf = FONT.render('Nouvelle Partie', True, BLANC, VERT)
@@ -178,6 +178,44 @@ def dessinerTableau():
                 pygame.draw.circle(ecran, tileColor, (centerx, centery), int(50 / 2) - 4)
 
 
+def qui_commence():
+    global tour
+    BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
+
+    textSurf = FONT.render('Voulez-vous commencer?  [Oui : NOIR, Non : BLANC]', True, BLANC, VERT)
+    textRect = textSurf.get_rect()
+    textRect.center = (int(HAUTEUR / 2), int(LARGEUR / 2))
+
+    xSurf = BIGFONT.render('OUI', True, BLANC, VERT)
+    xRect = xSurf.get_rect()
+    xRect.center = (int(640 / 2) - 60, int(640 / 2) + 40)
+
+    oSurf = BIGFONT.render('NON', True, BLANC, VERT)
+    oRect = oSurf.get_rect()
+    oRect.center = (int(640 / 2) + 60, int(640 / 2) + 40)
+
+    while True:
+
+        checkForQuit()
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONUP:
+                mousex, mousey = event.pos
+                if xRect.collidepoint((mousex, mousey)):
+                    tour = 'joueur'
+
+                    return [TUILE_NOIRE, TUILE_BLANCHE]
+                elif oRect.collidepoint((mousex, mousey)):
+                    tour = 'ordi'
+                    return [TUILE_BLANCHE, TUILE_NOIRE]
+
+        print(tour)
+        ecran.blit(textSurf, textRect)
+        ecran.blit(xSurf, xRect)
+        ecran.blit(oSurf, oRect)
+        pygame.display.update()
+        MAINCLOCK.tick(60)
+
+
 def scoreTableau(grille):
     xscore = 0
     oscore = 0
@@ -292,44 +330,6 @@ def isOnBoard(x, y):
     return x >= 0 and x < 8 and y >= 0 and y < 8
 
 
-def qui_commence():
-    global tour
-    BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
-
-    textSurf = FONT.render('Voulez-vous commencer?  [Oui : NOIR, Non : BLANC]', True, BLANC, VERT)
-    textRect = textSurf.get_rect()
-    textRect.center = (int(640 / 2), int(640 / 2))
-
-    xSurf = BIGFONT.render('OUI', True, BLANC, VERT)
-    xRect = xSurf.get_rect()
-    xRect.center = (int(640 / 2) - 60, int(640 / 2) + 40)
-
-    oSurf = BIGFONT.render('NON', True, BLANC, VERT)
-    oRect = oSurf.get_rect()
-    oRect.center = (int(640 / 2) + 60, int(640 / 2) + 40)
-
-    while True:
-
-        checkForQuit()
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONUP:
-                mousex, mousey = event.pos
-                if xRect.collidepoint((mousex, mousey)):
-                    tour = 'joueur'
-
-                    return [TUILE_NOIRE, TUILE_BLANCHE]
-                elif oRect.collidepoint((mousex, mousey)):
-                    tour = 'ordi'
-                    return [TUILE_BLANCHE, TUILE_NOIRE]
-
-        print(tour)
-        ecran.blit(textSurf, textRect)
-        ecran.blit(xSurf, xRect)
-        ecran.blit(oSurf, oRect)
-        pygame.display.update()
-        MAINCLOCK.tick(60)
-
-
 def getPosition(mousex, mousey):
     for x in range(8):
         for y in range(8):
@@ -343,7 +343,6 @@ def getPosition(mousex, mousey):
 
 def ordiMouvement(grille, tuileOrdi):
     possibleMoves = getMouvementValide(grille, tuileOrdi)
-
     random.shuffle(possibleMoves)
 
     for x, y in possibleMoves:
