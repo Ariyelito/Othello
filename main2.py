@@ -52,14 +52,17 @@ def Jouerjeu():
     # Loop principale du jeu
     while True:
         # Keep looping for player and computer's turns.
+        print('le tour à :')
+        print(tour)
         if tour == 'joueur':
             # Player's turn:
             if getMouvementValide(tableauPrincipal, tuileJoueur) == []:
                 # If it's the player's turn but they
                 # can't move, then end the game.
-                print('Oui')
+                print('break while')
                 break
             movexy = None
+            print('movexy')
             while movexy == None:
                 checkForQuit()
                 # Keep looping until the player clicks on a valid space.
@@ -229,9 +232,10 @@ def getMouvementValide(grille, tuile):
     validMoves = []
     for x in range(8):
         for y in range(8):
+            # print(movementValide(grille, tuile, x, y))
             if movementValide(grille, tuile, x, y) != False:
+                print('appending')
                 validMoves.append((x, y))
-
     print(validMoves)
     return validMoves
 
@@ -277,6 +281,7 @@ def movementValide(grille, tuile, xstart, ystart):
 
     grille[xstart][ystart] = VIDE
     if len(tuileAretourner) == 0:
+        # print('deuxieme false')
         return False
 
     return tuileAretourner
