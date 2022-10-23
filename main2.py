@@ -75,7 +75,7 @@ def Jouerjeu():
                         if movexy != None and not movementValide(tableauPrincipal, tuileJoueur, movexy[0], movexy[1]):
                             movexy = None
 
-                dessinerTableau()
+                dessinerTableau(tableauPrincipal)
                 ecran.blit(newGameSurf, newGameRect)
                 MAINCLOCK.tick(60)
                 pygame.display.update()
@@ -86,7 +86,7 @@ def Jouerjeu():
         else:
             if getMouvementValide(tableauPrincipal, tuileOrdi) == []:
                 break
-            dessinerTableau()
+            dessinerTableau(tableauPrincipal)
             ecran.blit(newGameSurf, newGameRect)
             pauseUntil = time.time() + random.randint(5, 15) * 0.1
             while time.time() < pauseUntil:
@@ -275,7 +275,7 @@ def movementValide(grille, tuile, xstart, ystart):
                 while True:
                     x -= xdirection
                     y -= ydirection
-                    if x == x and xstart == ystart:
+                    if x == xstart and y == ystart:
                         break
                     tuileAretourner.append([x, y])
 
