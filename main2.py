@@ -38,10 +38,9 @@ def main():
 
 def Jouerjeu():
     global tour
-    global tableauPrincipal
     tableauPrincipal = getNouveauTableau()
     razTableau(tableauPrincipal)
-    dessinerTableau()
+    dessinerTableau(tableauPrincipal)
     tuileJoueur, tuileOrdi = qui_commence()
     print('joueur: ' + tuileJoueur)
     print('ordi: ' + tuileOrdi)
@@ -94,7 +93,7 @@ def Jouerjeu():
             if getMouvementValide(tableauPrincipal, tuileJoueur) != []:
                 tour = 'joueur'
 
-    dessinerTableau()
+    dessinerTableau(tableauPrincipal)
     scores = scoreTableau(tableauPrincipal)
     text = ''
 
@@ -159,7 +158,7 @@ def razTableau(grille):
     grille[4][4] = TUILE_BLANCHE
 
 
-def dessinerTableau():
+def dessinerTableau(grille):
     ecran.blit(BACKGROUND, BACKGROUND.get_rect())
 
     for x in range(8 + 1):
@@ -179,8 +178,8 @@ def dessinerTableau():
     for x in range(8):
         for y in range(8):
             centerx, centery = 120 + x * 50 + int(50 / 2), 120 + y * 50 + int(50 / 2)
-            if tableauPrincipal[x][y] == TUILE_BLANCHE or tableauPrincipal[x][y] == TUILE_NOIRE:
-                if tableauPrincipal[x][y] == TUILE_BLANCHE:
+            if grille[x][y] == TUILE_BLANCHE or grille[x][y] == TUILE_NOIRE:
+                if grille[x][y] == TUILE_BLANCHE:
                     tileColor = BLANC
                 else:
                     tileColor = NOIR
@@ -233,15 +232,18 @@ def getMouvementValide(grille, tuile):
             if movementValide(grille, tuile, x, y) != False:
                 validMoves.append((x, y))
 
+    print(validMoves)
     return validMoves
 
 
-def movementValide(grille, tuile, x, y):
-    if grille[x][y] != VIDE or not dansLeTableau(x, y):
+def movementValide(grille, tuile, xstart, ystart):
+
+    if grille[xstart][ystart] != VIDE or not dansLeTableau(xstart, ystart):
         return False
 
-    grille[x][y] = tuile
+    grille[xstart][ystart] = tuile
 
+   
     if tuile == TUILE_BLANCHE:
         autreTuile = TUILE_NOIRE
     else:
@@ -250,11 +252,10 @@ def movementValide(grille, tuile, x, y):
     tuileAretourner = []
 
     for xdirection, ydirection in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]:
-        x, y = x, y
+        x, y = xstart, ystart
         x += xdirection
         y += ydirection
         if dansLeTableau(x, y) and grille[x][y] == autreTuile:
-
             x += xdirection
             y += ydirection
             if not dansLeTableau(x, y):
@@ -270,11 +271,11 @@ def movementValide(grille, tuile, x, y):
                 while True:
                     x -= xdirection
                     y -= ydirection
-                    if x == x and y == y:
+                    if x == x and xstart == ystart:
                         break
                     tuileAretourner.append([x, y])
 
-    grille[x][y] = VIDE
+    grille[xstart][ystart] = VIDE
     if len(tuileAretourner) == 0:
         return False
 
