@@ -13,6 +13,7 @@ BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
 VERT = (0, 155, 0)
 
+
 def main():
     global BACKGROUND, FONT, MAINCLOCK, Font2
     pygame.init()
@@ -43,26 +44,33 @@ def Jouerjeu():
     dessinerTableau()
     tuileJoueur, tuileOrdi = qui_commence()
     print('joueur: ' + tuileJoueur)
-    print('ordi: ' +tuileOrdi)
+    print('ordi: ' + tuileOrdi)
 
     newGameSurf = FONT.render('Nouvelle Partie', True, BLANC, VERT)
     newGameRect = newGameSurf.get_rect()
     newGameRect.topright = (LARG - 8, 10)
 
+    # Loop principale du jeu
     while True:
+        # Keep looping for player and computer's turns.
         if tour == 'joueur':
+            # Player's turn:
             if getMouvementValide(tableauPrincipal, tuileJoueur) == []:
+                # If it's the player's turn but they
+                # can't move, then end the game.
+                print('Oui')
                 break
             movexy = None
             while movexy == None:
                 checkForQuit()
+                # Keep looping until the player clicks on a valid space.
                 for event in pygame.event.get():
                     if event.type == MOUSEBUTTONUP:
                         mousex, mousey = event.pos
                         if newGameRect.collidepoint((mousex, mousey)):
                             return True
                         movexy = getPosition(mousex, mousey)
-                        if movexy != None and not isValidMove(tableauPrincipal, tuileJoueur, movexy[0], movexy[1]):
+                        if movexy != None and not movementValide(tableauPrincipal, tuileJoueur, movexy[0], movexy[1]):
                             movexy = None
 
                 dessinerTableau()
@@ -88,6 +96,7 @@ def Jouerjeu():
 
     dessinerTableau()
     scores = scoreTableau(tableauPrincipal)
+    text = ''
 
     if scores[tuileJoueur] > scores[tuileOrdi]:
         text = 'vous avez battu lordinatueur par %s points! Félicitation!' % \
@@ -195,7 +204,7 @@ def qui_commence():
     oRect.center = (int(LARG / 2) + 60, int(HAUT / 2) + 250)
 
     while True:
-    # Loop jusqu'à décision du joueur.
+        # Loop jusqu'à décision du joueur.
         checkForQuit()
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONUP:
@@ -217,6 +226,65 @@ def qui_commence():
         MAINCLOCK.tick(60)
 
 
+def getMouvementValide(grille, tuile):
+    validMoves = []
+    for x in range(8):
+        for y in range(8):
+            if movementValide(grille, tuile, x, y) != False:
+                validMoves.append((x, y))
+
+    return validMoves
+
+
+def movementValide(grille, tuile, x, y):
+    if grille[x][y] != VIDE or not dansLeTableau(x, y):
+        return False
+
+    grille[x][y] = tuile
+
+    if tuile == TUILE_BLANCHE:
+        autreTuile = TUILE_NOIRE
+    else:
+        autreTuile = TUILE_BLANCHE
+
+    tuileAretourner = []
+
+    for xdirection, ydirection in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]:
+        x, y = x, y
+        x += xdirection
+        y += ydirection
+        if dansLeTableau(x, y) and grille[x][y] == autreTuile:
+
+            x += xdirection
+            y += ydirection
+            if not dansLeTableau(x, y):
+                continue
+            while grille[x][y] == autreTuile:
+                x += xdirection
+                y += ydirection
+                if not dansLeTableau(x, y):
+                    break
+            if not dansLeTableau(x, y):
+                continue
+            if grille[x][y] == tuile:
+                while True:
+                    x -= xdirection
+                    y -= ydirection
+                    if x == x and y == y:
+                        break
+                    tuileAretourner.append([x, y])
+
+    grille[x][y] = VIDE
+    if len(tuileAretourner) == 0:
+        return False
+
+    return tuileAretourner
+
+
+def dansLeTableau(x, y):
+    return x >= 0 and x < 8 and y >= 0 and y < 8
+
+
 def scoreTableau(grille):
     xscore = 0
     oscore = 0
@@ -230,7 +298,7 @@ def scoreTableau(grille):
 
 
 def faireMouvement(grille, tuile, x, y, mouvement=False):
-    tilesToFlip = isValidMove(grille, tuile, x, y)
+    tilesToFlip = movementValide(grille, tuile, x, y)
 
     if tilesToFlip == False:
         return False
@@ -271,64 +339,6 @@ def animationChangementTuile(tuileFlip, tuileCouleur, autreTuile):
         pygame.display.update()
         MAINCLOCK.tick(60)
         checkForQuit()
-
-
-def getMouvementValide(grille, tuile):
-    validMoves = []
-    for x in range(8):
-        for y in range(8):
-            if isValidMove(grille, tuile, x, y) != False:
-                validMoves.append((x, y))
-    return validMoves
-
-
-def isValidMove(grille, tuile, x, y):
-    if grille[x][y] != VIDE or not isOnBoard(x, y):
-        return False
-
-    grille[x][y] = tuile
-
-    if tuile == TUILE_BLANCHE:
-        autreTuile = TUILE_NOIRE
-    else:
-        autreTuile = TUILE_BLANCHE
-
-    tuileAretourner = []
-
-    for xdirection, ydirection in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]:
-        x, y = x, y
-        x += xdirection
-        y += ydirection
-        if isOnBoard(x, y) and grille[x][y] == autreTuile:
-
-            x += xdirection
-            y += ydirection
-            if not isOnBoard(x, y):
-                continue
-            while grille[x][y] == autreTuile:
-                x += xdirection
-                y += ydirection
-                if not isOnBoard(x, y):
-                    break
-            if not isOnBoard(x, y):
-                continue
-            if grille[x][y] == tuile:
-                while True:
-                    x -= xdirection
-                    y -= ydirection
-                    if x == x and y == y:
-                        break
-                    tuileAretourner.append([x, y])
-
-    grille[x][y] = VIDE
-    if len(tuileAretourner) == 0:
-        return False
-
-    return tuileAretourner
-
-
-def isOnBoard(x, y):
-    return x >= 0 and x < 8 and y >= 0 and y < 8
 
 
 def getPosition(mousex, mousey):
