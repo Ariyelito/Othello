@@ -8,6 +8,7 @@ TUILE_NOIRE = "NOIRE"
 TUILE_BLANCHE = "BLANCHE"
 LARG = 640
 HAUT = 640
+pygame.display.set_caption('Othello Game made by Ricardo , Orlando & Christopher')
 ecran = pygame.display.set_mode((LARG, HAUT))
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
@@ -101,10 +102,10 @@ def Jouerjeu():
     text = ''
 
     if scores[tuileJoueur] > scores[tuileOrdi]:
-        text = 'vous avez battu lordinatueur par %s points! Félicitations!' % \
+        text = 'Vous avez battu l\'ordinatueur par %s points! Félicitations!' % \
                (scores[tuileJoueur] - scores[tuileOrdi])
     elif scores[tuileJoueur] < scores[tuileOrdi]:
-        text = 'Vous avez perdu. lordinateur vous a battu par %s points.' % \
+        text = 'Vous avez perdu.L\'ordinateur vous a battu par %s points.' % \
                (scores[tuileOrdi] - scores[tuileJoueur])
     else:
         text = 'Partie Nulle'
@@ -114,7 +115,7 @@ def Jouerjeu():
     textRect.center = (int(LARG / 2), int(HAUT / 2))
     ecran.blit(text, textRect)
 
-    text2 = Font2.render('Jouer encore', True, BLANC, VERT)
+    text2 = Font2.render('Voulez-vous jouer encore?', True, BLANC, VERT)
     text2Rect = text2.get_rect()
     text2Rect.center = (int(LARG / 2), int(HAUT / 2) + 50)
 
@@ -160,23 +161,19 @@ def razTableau(grille):
     grille[4][3] = TUILE_NOIRE
     grille[4][4] = TUILE_BLANCHE
 
-
-def dessinerTableau(grille):
-    ecran.blit(BACKGROUND, BACKGROUND.get_rect())
-
+# optimiser le code pour les lignes 
+def line():
     for x in range(8 + 1):
         xdebut = (x * 50) + 120
         ydebut = 120
         xfin = (x * 50) + 120
         yfin = 120 + (8 * 50)
         pygame.draw.line(ecran, NOIR, (xdebut, ydebut), (xfin, yfin))
+        pygame.draw.line(ecran, NOIR, (ydebut, xdebut), (yfin, xfin))
 
-    for y in range(8 + 1):
-        xdebut = 120
-        ydebut = (y * 50) + 120
-        xfin = 120 + (8 * 50)
-        yfin = (y * 50) + 120
-        pygame.draw.line(ecran, NOIR, (xdebut, ydebut), (xfin, yfin))
+def dessinerTableau(grille):
+    ecran.blit(BACKGROUND, BACKGROUND.get_rect())
+    line()
 
     for x in range(8):
         for y in range(8):
@@ -255,7 +252,16 @@ def movementValide(grille, tuile, xdebut, ydebut):
 
     tuileAretourner = []
 
-    for xgrille, ygrille in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]:
+    tab = [[0, 1],
+            [1, 1],
+            [1, 0],
+            [1, -1], 
+            [0, -1],
+            [-1, -1],
+            [-1, 0],
+            [-1, 1]]
+
+    for xgrille, ygrille in tab :
         x, y = xdebut, ydebut
         x += xgrille
         y += ygrille
