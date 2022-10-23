@@ -233,7 +233,9 @@ def getMouvementValide(grille, tuile):
     validMoves = []
     for x in range(8):
         for y in range(8):
+            # print(movementValide(grille, tuile, x, y))
             if movementValide(grille, tuile, x, y) != False:
+                print('appending')
                 validMoves.append((x, y))
     print('moves :')
     print(validMoves)
@@ -243,9 +245,12 @@ def getMouvementValide(grille, tuile):
 def movementValide(grille, tuile, x, y):
     # Returns False if the player's move is invalid. If it is a valid
     # move, returns a list of spaces of the captured pieces.
+    test = 'success'
     if grille[x][y] != VIDE or not dansLeTableau(x, y):
+        print('vide ou pas dans le tableau')
+        test = 'fail'
         return False
-
+    # print(test)
     grille[x][y] = tuile
 
     if tuile == TUILE_BLANCHE:
@@ -281,7 +286,9 @@ def movementValide(grille, tuile, x, y):
                     tuileAretourner.append([x, y])
 
     grille[x][y] = VIDE
+    # print(tuileAretourner)
     if len(tuileAretourner) == 0:
+        # print('deuxieme false')
         return False
 
     return tuileAretourner
