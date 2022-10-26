@@ -19,6 +19,12 @@ pygame.mixer.init()
 pygame.mixer.music.load(file)
 pygame.mixer.music.play(-1, 0, 6000)
 
+def music():
+    fileClick = 'ClicDeSouris.mp3'
+    pygame.mixer.init()
+    pygame.mixer.music.load(fileClick)
+    pygame.mixer.music.play(-1, 0, 6000)
+
 # permet de jouer le jeu quand la méthode jouerJeu est actif
 def main():
     global BACKGROUND, FONT, HORLOGE, Font2
