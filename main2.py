@@ -26,8 +26,6 @@ def click():
     clicksound = pygame.mixer.Sound(fileClick)
     pygame.mixer.Sound.play(clicksound)
 
-def ArreterMusic():
-    pygame.mixer.stop()
 
 # permet de jouer le jeu quand la méthode jouerJeu est actif
 def main():
@@ -48,6 +46,7 @@ def main():
     BACKGROUND.blit(grilleImage, grilleImageRect)
 
     while True:
+        musicPrincipale()
         # ecran.blit(titre, titreRect)
         if Jouerjeu() == False:
             break
@@ -68,14 +67,13 @@ def Jouerjeu():
     nouvellePartieRect = nouvellePartie.get_rect()
     nouvellePartieRect.topright = (LARG - 8, 10)
 
-    sonMuet = FONT.render('Son Muet', False , BLANC, NOIR)
+    sonMuet = FONT.render('Son Muet', True , BLANC, NOIR)
     sonMuetRect = sonMuet.get_rect()
 
     
 
     # Loop principale du jeu
     while True:
-
         # Tourne en boucle pour le tour du joueur et de l'ordinateur
         print('le tour à :')
         print(tour)
@@ -107,10 +105,7 @@ def Jouerjeu():
 
                 # bouton nouvelle partie
                 ecran.blit(nouvellePartie, nouvellePartieRect)
-                if music() == True:
-                    ecran.blit(sonMuet,sonMuetRect)
-                else :
-                    ArreterMusic()
+                ecran.blit(sonMuet,sonMuetRect)
                 HORLOGE.tick(60)
                 pygame.display.update()
 
