@@ -27,6 +27,9 @@ def click():
     clicksound = pygame.mixer.Sound(fileClick)
     pygame.mixer.Sound.play(clicksound)
 
+def paused():
+    pygame.mixer.music.unpause()
+
 
 # permet de jouer le jeu quand la méthode jouerJeu est actif
 def main():
@@ -106,8 +109,8 @@ def Jouerjeu():
 
                 # bouton nouvelle partie
                 ecran.blit(nouvellePartie, nouvellePartieRect)
-                ecran.blit(sonMuet,sonMuetRect)
                 HORLOGE.tick(60)
+                
                 pygame.display.update()
 
             # faire le mouvement et fin du tour du joueur
@@ -125,7 +128,6 @@ def Jouerjeu():
             info(tableauPrincipal, tuileJoueur, tuileOrdi, tour)
             # titre()
             ecran.blit(nouvellePartie, nouvellePartieRect)
-            ecran.blit(sonMuet,sonMuetRect)
             
             # faire comme si l'ordinateur réféchissait
             pause = time.time() + random.randint(5, 15) * 0.1
