@@ -82,6 +82,7 @@ def Jouerjeu():
                             mouvementxy = None
 
                 dessinerTableau(tableauPrincipal)
+                info(tableauPrincipal, tuileJoueur, tuileOrdi, tour)
                 ecran.blit(nouvellePartie, nouvellePartieRect)
                 HORLOGE.tick(60)
                 pygame.display.update()
@@ -93,6 +94,7 @@ def Jouerjeu():
             if getMouvementValide(tableauPrincipal, tuileOrdi) == []:
                 break
             dessinerTableau(tableauPrincipal)
+            info(tableauPrincipal, tuileJoueur, tuileOrdi, tour)
             ecran.blit(nouvellePartie, nouvellePartieRect)
             pause = time.time() + random.randint(5, 15) * 0.1
             while time.time() < pause:
@@ -357,6 +359,14 @@ def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
         HORLOGE.tick(60)
         verifierQuitter()
 
+
+def info(grille, tuileJoueur, tuileOrdi, tour):
+    scores = scoreTableau(grille)
+    scoreSurf = FONT.render("Score du Joueur: %s    Score Ordi: %s   Tour %s " % (
+        str(scores[tuileJoueur]), str(scores[tuileOrdi]), tour.title()), True, NOIR)
+    scoreRect = scoreSurf.get_rect()
+    scoreRect.bottomleft = (10, HAUT - 5)
+    ecran.blit(scoreSurf, scoreRect)
 
 def obtenirPosition(xSouris, ySouris):
     for x in range(8):
