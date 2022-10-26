@@ -10,10 +10,11 @@ LARG = 640
 HAUT = 640
 pygame.display.set_caption('Othello Game made by Ricardo , Orlando & Christopher')
 ecran = pygame.display.set_mode((LARG, HAUT))
+programIcon = pygame.image.load('icon.png')
+pygame.display.set_icon(programIcon)
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
 VERT = (0, 155, 0)
-
 
 def musicPrincipale():
     file = 'instrumental.mp3'
@@ -26,7 +27,6 @@ def click():
     # pygame.mixer.init()
     clicksound = pygame.mixer.Sound(fileClick)
     pygame.mixer.Sound.play(clicksound)
-
 
 # permet de jouer le jeu quand la méthode jouerJeu est actif
 def main():
@@ -76,16 +76,13 @@ def Jouerjeu():
     # Loop principale du jeu
     while True:
         # Tourne en boucle pour le tour du joueur et de l'ordinateur
-        print('le tour à :')
-        print(tour)
+        print('le tour à : ' + tour)
         if tour == 'joueur':
             # tour du joueur:
             if getMouvementValide(tableauPrincipal, tuileJoueur) == []:
                 # regarder si le joueur a des possibilitées de mouvement si oui continu sinon tour de l'ordinateur
-                print('break while')
                 break
             mouvementxy = None
-            print('movexy')
             while mouvementxy == None:
                 verifierQuitter()
                 # loop jusqu'a ce que le joueur click sur un bouton.
@@ -265,8 +262,6 @@ def qui_commence():
                     tour = 'ordi'
                     print("L'ordi commence!")
                     return [TUILE_BLANCHE, TUILE_NOIRE]
-
-        # print(tour)
         ecran.blit(textCommence, textReponse)
         ecran.blit(oui, ouiReponse)
         ecran.blit(non, nonReponse)
@@ -279,11 +274,8 @@ def getMouvementValide(grille, tuile):
     mouvementValides = []
     for x in range(8):
         for y in range(8):
-            # print(movementValide(grille, tuile, x, y))
             if movementValide(grille, tuile, x, y) != False:
-                print('appending')
                 mouvementValides.append((x, y))
-    print(mouvementValides)
     return mouvementValides
 
 
@@ -336,7 +328,6 @@ def movementValide(grille, tuile, xdebut, ydebut):
 
     grille[xdebut][ydebut] = VIDE
     if len(tuileAretourner) == 0:
-        # print('deuxieme false')
         return False
 
     return tuileAretourner
