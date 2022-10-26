@@ -403,14 +403,13 @@ def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
         HORLOGE.tick(60)
         verifierQuitter()
 
-
 # ecrire les infortions (score et le tour) sur l'écran
 def info(grille, tuileJoueur, tuileOrdi, tour):
     scores = scoreTableau(grille)
     scoreSurf = FONT.render("Score du Joueur: %s    Score Ordi: %s   Tour %s " % (
-        str(scores[tuileJoueur]), str(scores[tuileOrdi]), tour.title()), True, NOIR)
+        str(scores[tuileJoueur]), str(scores[tuileOrdi]), tour.title()), True, NOIR, BLANC)
     scoreRect = scoreSurf.get_rect()
-    scoreRect.bottomleft = (10, HAUT - 5)
+    scoreRect.bottomleft = (LARG / 8, HAUT - 5)
     ecran.blit(scoreSurf, scoreRect)
 
 def titre():
