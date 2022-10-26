@@ -19,13 +19,7 @@ pygame.mixer.init()
 pygame.mixer.music.load(file)
 pygame.mixer.music.play(-1, 0, 6000)
 
-
-def music(): 
-    fileClick = 'ClicDeSouris.mp3'
-    pygame.mixer.init()
-    pygame.mixer.music.load(fileClick)
-    pygame.mixer.music.play(-1, 0, 6000)
-
+# permet de jouer le jeu quand la méthode jouerJeu est actif
 def main():
     global BACKGROUND, FONT, HORLOGE, Font2
     pygame.init()
@@ -47,7 +41,7 @@ def main():
         if Jouerjeu() == False:
             break
 
-
+# jouer le jeu Othello
 def Jouerjeu():
     global tour
     tableauPrincipal = getNouveauTableau()
@@ -65,48 +59,59 @@ def Jouerjeu():
 
     # Loop principale du jeu
     while True:
-        # Keep looping for player and computer's turns.
+        # Tourne en boucle pour le tour du joueur et de l'ordinateur
         print('le tour à :')
         print(tour)
         if tour == 'joueur':
-            # Player's turn:
+            # tour du joueur:
             if getMouvementValide(tableauPrincipal, tuileJoueur) == []:
-                # If it's the player's turn but they
-                # can't move, then end the game.
+                # regarder si le joueur a des possibilitées de mouvement si oui continu sinon tour de l'ordinateur
                 print('break while')
                 break
             mouvementxy = None
             print('movexy')
             while mouvementxy == None:
                 verifierQuitter()
-                # Keep looping until the player clicks on a valid space.
+                # loop jusqu'a ce que le joueur click sur un bouton.
                 for event in pygame.event.get():
                     if event.type == MOUSEBUTTONUP:
                         xSouris, ySouris = event.pos
                         if nouvellePartieRect.collidepoint((xSouris, ySouris)):
                             return True
                         mouvementxy = obtenirPosition(xSouris, ySouris)
-                        if mouvementxy != None and not movementValide(tableauPrincipal, tuileJoueur, mouvementxy[0], mouvementxy[1]):
+                        if mouvementxy != None and not movementValide(tableauPrincipal, tuileJoueur, mouvementxy[0],
+                                                                      mouvementxy[1]):
                             mouvementxy = None
 
+                # dessiner le tableau et les infos du jeu
                 dessinerTableau(tableauPrincipal)
                 info(tableauPrincipal, tuileJoueur, tuileOrdi, tour)
+
+                # bouton nouvelle partie
                 ecran.blit(nouvellePartie, nouvellePartieRect)
                 HORLOGE.tick(60)
                 pygame.display.update()
 
+            #faire le mouvement et fin du tour du joueur
             faireMouvement(tableauPrincipal, tuileJoueur, mouvementxy[0], mouvementxy[1], True)
             if getMouvementValide(tableauPrincipal, tuileOrdi) != []:
                 tour = 'ordi'
         else:
+            #tour de l'ordinateur
             if getMouvementValide(tableauPrincipal, tuileOrdi) == []:
+                # regarder si l'ordinateur a des possibilitées de mouvement si oui continu sinon break
                 break
+
+            # dessiner le tableau et les infos du jeu
             dessinerTableau(tableauPrincipal)
             info(tableauPrincipal, tuileJoueur, tuileOrdi, tour)
             ecran.blit(nouvellePartie, nouvellePartieRect)
+            
+            # faire comme si l'ordinateur réféchissait
             pause = time.time() + random.randint(5, 15) * 0.1
             while time.time() < pause:
                 pygame.display.update()
+
             x, y = ordiMouvement(tableauPrincipal, tuileOrdi)
             faireMouvement(tableauPrincipal, tuileOrdi, x, y, True)
             if getMouvementValide(tableauPrincipal, tuileJoueur) != []:
@@ -158,14 +163,14 @@ def Jouerjeu():
         pygame.display.update()
         HORLOGE.tick(60)
 
-
+#avoir un nouveau tableau
 def getNouveauTableau():
     tableau = []
     for i in range(8):
         tableau.append([VIDE] * 8)
     return tableau
 
-
+#remetre le tableau à zero et dessiner les 4 premieres tuile du jeu
 def razTableau(grille):
     for x in range(8):
         for y in range(8):
@@ -176,7 +181,7 @@ def razTableau(grille):
     grille[4][3] = TUILE_NOIRE
     grille[4][4] = TUILE_BLANCHE
 
-# optimiser le code pour les lignes 
+# optimiser le code pour les lignes du tableau
 def line():
     for x in range(8 + 1):
         xdebut = (x * 50) + 120
@@ -186,6 +191,7 @@ def line():
         pygame.draw.line(ecran, NOIR, (xdebut, ydebut), (xfin, yfin))
         pygame.draw.line(ecran, NOIR, (ydebut, xdebut), (yfin, xfin))
 
+#dessiner et parcourir le tableau pour afficher les tuiles blanches ou noir
 def dessinerTableau(grille):
     ecran.blit(BACKGROUND, BACKGROUND.get_rect())
     line()
@@ -200,7 +206,7 @@ def dessinerTableau(grille):
                     tuileCouleur = NOIR
                 pygame.draw.circle(ecran, tuileCouleur, (centrex, centrey), int(50 / 2) - 4)
 
-
+#Choisir qui commence la parti
 def qui_commence():
     global tour
     GECRAN = pygame.font.Font('freesansbold.ttf', 28)
@@ -239,7 +245,7 @@ def qui_commence():
         pygame.display.update()
         HORLOGE.tick(60)
 
-
+#parcourir la grille et regarder les mouvements valides grace à la méthode mouvementValide 
 def getMouvementValide(grille, tuile):
     mouvementValides = []
     for x in range(8):
@@ -251,15 +257,13 @@ def getMouvementValide(grille, tuile):
     print(mouvementValides)
     return mouvementValides
 
-
+#voir les mouvements valide et retourne les tuiles
 def movementValide(grille, tuile, xdebut, ydebut):
-
     if grille[xdebut][ydebut] != VIDE or not dansLeTableau(xdebut, ydebut):
         return False
 
     grille[xdebut][ydebut] = tuile
 
-   
     if tuile == TUILE_BLANCHE:
         autreTuile = TUILE_NOIRE
     else:
@@ -268,15 +272,15 @@ def movementValide(grille, tuile, xdebut, ydebut):
     tuileAretourner = []
 
     tab = [[0, 1],
-            [1, 1],
-            [1, 0],
-            [1, -1], 
-            [0, -1],
-            [-1, -1],
-            [-1, 0],
-            [-1, 1]]
+           [1, 1],
+           [1, 0],
+           [1, -1],
+           [0, -1],
+           [-1, -1],
+           [-1, 0],
+           [-1, 1]]
 
-    for xgrille, ygrille in tab :
+    for xgrille, ygrille in tab:
         x, y = xdebut, ydebut
         x += xgrille
         y += ygrille
@@ -307,11 +311,11 @@ def movementValide(grille, tuile, xdebut, ydebut):
 
     return tuileAretourner
 
-
+#regarder si la position est dans le tableau
 def dansLeTableau(x, y):
     return x >= 0 and x < 8 and y >= 0 and y < 8
 
-
+#afficher le score du tableau et du joueur 
 def scoreTableau(grille):
     tuileBlancheScore = 0
     tuileNoireScore = 0
@@ -323,7 +327,7 @@ def scoreTableau(grille):
                 tuileNoireScore += 1
     return {TUILE_BLANCHE: tuileBlancheScore, TUILE_NOIRE: tuileNoireScore}
 
-
+#afficher la tuile à l'endroit selectionner et faire retourner les tuiles grace a la méthode mouvement valide
 def faireMouvement(grille, tuile, x, y, mouvement=False):
     tuileAretourner = movementValide(grille, tuile, x, y)
 
@@ -339,7 +343,7 @@ def faireMouvement(grille, tuile, x, y, mouvement=False):
         grille[x][y] = tuile
     return True
 
-
+# faire les animation de changement de tuile
 def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
     music()
     if tuileCouleur == TUILE_BLANCHE:
@@ -368,7 +372,7 @@ def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
         HORLOGE.tick(60)
         verifierQuitter()
 
-
+#ecrire les infortions (score et le tour) sur l'écran
 def info(grille, tuileJoueur, tuileOrdi, tour):
     scores = scoreTableau(grille)
     scoreSurf = FONT.render("Score du Joueur: %s    Score Ordi: %s   Tour %s " % (
@@ -377,6 +381,7 @@ def info(grille, tuileJoueur, tuileOrdi, tour):
     scoreRect.bottomleft = (10, HAUT - 5)
     ecran.blit(scoreSurf, scoreRect)
 
+#obtenir la position de la souris dans la grille
 def obtenirPosition(xSouris, ySouris):
     for x in range(8):
         for y in range(8):
@@ -388,7 +393,7 @@ def obtenirPosition(xSouris, ySouris):
     return None
   
 
-
+# mouvement de l'ordinateur
 def ordiMouvement(grille, tuileOrdi):
     mouvementPossibles = getMouvementValide(grille, tuileOrdi)
     random.shuffle(mouvementPossibles)
@@ -407,17 +412,17 @@ def ordiMouvement(grille, tuileOrdi):
             meilleurScore = score
     return meilleurMouvement
 
-
+#retourne les coins de la grille
 def Corner(x, y):
     return (x == 0 and y == 0) or \
            (x == 8 and y == 0) or \
            (x == 0 and y == 8) or \
            (x == 8 and y == 8)
 
-
+# vérifier si le joueur quitte
 def verifierQuitter():
     for event in pygame.event.get((QUIT)):
-        if event.type == QUIT :
+        if event.type == QUIT:
             pygame.quit()
             sys.exit()
 
