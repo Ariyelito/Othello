@@ -35,7 +35,6 @@ GRIDLINECOLOR = BLACK
 TEXTCOLOR = WHITE
 HINTCOLOR = BROWN
 
-
 def main():
     global MAINCLOCK, DISPLAYSURF, FONT, BIGFONT, BGIMAGE
 
@@ -44,7 +43,7 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     pygame.display.set_caption('Simple Orthello')
     FONT = pygame.font.Font('freesansbold.ttf', 16)
-    BIGFONT = pygame.font.Font('freesansbold.ttf', 32)
+    BIGFONT = pygame.font.Font('Arial', 40)
 
     # Set up the background image.
     boardImage = pygame.image.load('board.png')
