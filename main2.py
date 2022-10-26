@@ -59,6 +59,12 @@ def Jouerjeu():
     nouvellePartieRect = nouvellePartie.get_rect()
     nouvellePartieRect.topright = (LARG - 8, 10)
 
+    sonMuet = FONT.render('Son Muet', True , BLANC, NOIR)
+    sonMuetRect = sonMuet.get_rect()
+    sonMuetRect.topleft = (LARG - 10, 10)
+
+    
+
     # Loop principale du jeu
     while True:
         # Tourne en boucle pour le tour du joueur et de l'ordinateur
@@ -110,7 +116,8 @@ def Jouerjeu():
             info(tableauPrincipal, tuileJoueur, tuileOrdi, tour)
             # titre()
             ecran.blit(nouvellePartie, nouvellePartieRect)
-
+            ecran.blit(sonMuet,sonMuetRect)
+            
             # faire comme si l'ordinateur réféchissait
             pause = time.time() + random.randint(5, 15) * 0.1
             while time.time() < pause:
@@ -363,6 +370,7 @@ def faireMouvement(grille, tuile, x, y, mouvement=False):
 
 # faire les animation de changement de tuile
 def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
+    music()
     if tuileCouleur == TUILE_BLANCHE:
         plusDeCouleur = BLANC
     else:
@@ -416,6 +424,7 @@ def obtenirPosition(xSouris, ySouris):
                     ySouris < (y + 1) * 50 + 120:
                 return (x, y)
     return None
+  
 
 
 # mouvement de l'ordinateur
