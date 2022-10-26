@@ -25,9 +25,9 @@ def main():
     pygame.init()
     HORLOGE = pygame.time.Clock()
     BACKGROUND = pygame.image.load('background.png')
-    FONT = pygame.font.Font('freesansbold.ttf', 16)
-    Font2 = pygame.font.Font('freesansbold.ttf', 32)
-
+    FONT = pygame.font.SysFont('Arial', 26)
+    Font2 = pygame.font.SysFont('Arial', 40)
+    # Font2 = pygame.font.SysFont('Arial', 40)
     grilleImage = pygame.image.load('board.png')
     grilleImage = pygame.transform.smoothscale(grilleImage, (8 * 50, 8 * 50))
 
