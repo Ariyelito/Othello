@@ -14,6 +14,11 @@ BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
 VERT = (0, 155, 0)
 
+file = 'instrumental.mp3'
+pygame.mixer.init()
+pygame.mixer.music.load(file)
+pygame.mixer.music.play(-1, 0, 6000)
+
 
 def main():
     global BACKGROUND, FONT, HORLOGE, Font2
