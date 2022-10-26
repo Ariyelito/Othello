@@ -78,7 +78,8 @@ def Jouerjeu():
                         if nouvellePartieRect.collidepoint((xSouris, ySouris)):
                             return True
                         mouvementxy = obtenirPosition(xSouris, ySouris)
-                        if mouvementxy != None and not movementValide(tableauPrincipal, tuileJoueur, mouvementxy[0], mouvementxy[1]):
+                        if mouvementxy != None and not movementValide(tableauPrincipal, tuileJoueur, mouvementxy[0],
+                                                                      mouvementxy[1]):
                             mouvementxy = None
 
                 dessinerTableau(tableauPrincipal)
@@ -168,7 +169,8 @@ def razTableau(grille):
     grille[4][3] = TUILE_NOIRE
     grille[4][4] = TUILE_BLANCHE
 
-# optimiser le code pour les lignes 
+
+# optimiser le code pour les lignes
 def line():
     for x in range(8 + 1):
         xdebut = (x * 50) + 120
@@ -177,6 +179,7 @@ def line():
         yfin = 120 + (8 * 50)
         pygame.draw.line(ecran, NOIR, (xdebut, ydebut), (xfin, yfin))
         pygame.draw.line(ecran, NOIR, (ydebut, xdebut), (yfin, xfin))
+
 
 def dessinerTableau(grille):
     ecran.blit(BACKGROUND, BACKGROUND.get_rect())
@@ -245,13 +248,11 @@ def getMouvementValide(grille, tuile):
 
 
 def movementValide(grille, tuile, xdebut, ydebut):
-
     if grille[xdebut][ydebut] != VIDE or not dansLeTableau(xdebut, ydebut):
         return False
 
     grille[xdebut][ydebut] = tuile
 
-   
     if tuile == TUILE_BLANCHE:
         autreTuile = TUILE_NOIRE
     else:
@@ -260,15 +261,15 @@ def movementValide(grille, tuile, xdebut, ydebut):
     tuileAretourner = []
 
     tab = [[0, 1],
-            [1, 1],
-            [1, 0],
-            [1, -1], 
-            [0, -1],
-            [-1, -1],
-            [-1, 0],
-            [-1, 1]]
+           [1, 1],
+           [1, 0],
+           [1, -1],
+           [0, -1],
+           [-1, -1],
+           [-1, 0],
+           [-1, 1]]
 
-    for xgrille, ygrille in tab :
+    for xgrille, ygrille in tab:
         x, y = xdebut, ydebut
         x += xgrille
         y += ygrille
@@ -368,6 +369,7 @@ def info(grille, tuileJoueur, tuileOrdi, tour):
     scoreRect.bottomleft = (10, HAUT - 5)
     ecran.blit(scoreSurf, scoreRect)
 
+
 def obtenirPosition(xSouris, ySouris):
     for x in range(8):
         for y in range(8):
@@ -407,7 +409,7 @@ def Corner(x, y):
 
 def verifierQuitter():
     for event in pygame.event.get((QUIT)):
-        if event.type == QUIT :
+        if event.type == QUIT:
             pygame.quit()
             sys.exit()
 
