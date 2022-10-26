@@ -23,8 +23,10 @@ def music():
     fileClick = 'ClicDeSouris.mp3'
     pygame.mixer.init()
     pygame.mixer.music.load(fileClick)
-    pygame.mixer.music.play(-1, 0, 6000)
+    pygame.mixer.music.play(1, 0, 6000)
 
+def ArreterMusic():
+    pygame.mixer.stop()
 
 # permet de jouer le jeu quand la méthode jouerJeu est actif
 def main():
@@ -65,13 +67,14 @@ def Jouerjeu():
     nouvellePartieRect = nouvellePartie.get_rect()
     nouvellePartieRect.topright = (LARG - 8, 10)
 
-    sonMuet = FONT.render('Son Muet', True , BLANC, NOIR)
+    sonMuet = FONT.render('Son Muet', False , BLANC, NOIR)
     sonMuetRect = sonMuet.get_rect()
 
     
 
     # Loop principale du jeu
     while True:
+
         # Tourne en boucle pour le tour du joueur et de l'ordinateur
         print('le tour à :')
         print(tour)
@@ -103,7 +106,10 @@ def Jouerjeu():
 
                 # bouton nouvelle partie
                 ecran.blit(nouvellePartie, nouvellePartieRect)
-                ecran.blit(sonMuet,sonMuetRect)
+                if music() == True:
+                    ecran.blit(sonMuet,sonMuetRect)
+                else :
+                    ArreterMusic()
                 HORLOGE.tick(60)
                 pygame.display.update()
 
@@ -376,7 +382,6 @@ def faireMouvement(grille, tuile, x, y, mouvement=False):
 
 # faire les animation de changement de tuile
 def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
-    music()
     if tuileCouleur == TUILE_BLANCHE:
         plusDeCouleur = BLANC
     else:
