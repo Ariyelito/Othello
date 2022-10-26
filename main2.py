@@ -74,7 +74,6 @@ def Jouerjeu():
 
     sonMuet = FONT.render('Son activé', True , BLANC, NOIR)
     sonMuetRect = sonMuet.get_rect()
-    sonMuet = FONT.render('Son éteint', True, BLANC, NOIR)
     son = True
 
     
@@ -101,10 +100,12 @@ def Jouerjeu():
                         if sonMuetRect.collidepoint((xSouris, ySouris)):
                             if son == False :
                                 pygame.mixer.music.unpause()
+                                sonMuet = FONT.render('Son activé', True , BLANC, NOIR)
                                 son = True
                                 print(son)
                             elif son == True:
                                 pygame.mixer.music.pause()
+                                sonMuet = FONT.render('Son éteint', True , BLANC, NOIR)
                                 son = False
                                 print(son)
                             #
@@ -122,6 +123,8 @@ def Jouerjeu():
 
                 # bouton nouvelle partie
                 ecran.blit(nouvellePartie, nouvellePartieRect)
+                ecran.blit(sonMuet, sonMuetRect)
+
                 HORLOGE.tick(60)
                 
                 pygame.display.update()
@@ -141,6 +144,7 @@ def Jouerjeu():
             info(tableauPrincipal, tuileJoueur, tuileOrdi, tour)
             # titre()
             ecran.blit(nouvellePartie, nouvellePartieRect)
+            ecran.blit(sonMuet, sonMuetRect)
             
             # faire comme si l'ordinateur réféchissait
             pause = time.time() + random.randint(5, 15) * 0.1
