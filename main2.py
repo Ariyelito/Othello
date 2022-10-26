@@ -14,18 +14,17 @@ BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
 VERT = (0, 155, 0)
 
-
-def musicPrincipale():
-    file = 'instrumental.mp3'
-    pygame.mixer.init()
-    pygame.mixer.music.load(file)
-    pygame.mixer.music.play(-1, 0, 6000)
+file = 'instrumental.mp3'
+pygame.mixer.init()
+pygame.mixer.music.load(file)
+pygame.mixer.music.play(-1)
+   
 
 def music():
-    fileClick = 'ClicDeSouris.mp3'
-    pygame.mixer.init()
-    pygame.mixer.music.load(fileClick)
-    pygame.mixer.music.play(1, 0, 6000)
+    crash_sound = pygame.mixer.Sound("ClicDeSouris.mp3")
+    pygame.mixer.Sound.play(crash_sound)
+    pygame.mixer.music.stop()
+   
 
 
 # permet de jouer le jeu quand la méthode jouerJeu est actif
@@ -47,7 +46,6 @@ def main():
     BACKGROUND.blit(grilleImage, grilleImageRect)
 
     while True:
-        musicPrincipale()
         # ecran.blit(titre, titreRect)
         if Jouerjeu() == False:
             break
@@ -380,7 +378,8 @@ def faireMouvement(grille, tuile, x, y, mouvement=False):
 # faire les animation de changement de tuile
 def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
     music()
-   
+    pygame.mixer.music.unpause()
+    
     if tuileCouleur == TUILE_BLANCHE:
         plusDeCouleur = BLANC
     else:
@@ -404,7 +403,7 @@ def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
             centreX, centreY = 120 + x * 50 + int(50 / 2), 120 + y * 50 + int(50 / 2)
             pygame.draw.circle(ecran, couleur, (centreX, centreY), int(50 / 2) - 4)
 
-        musicPrincipale()   
+       
         pygame.display.update()
         HORLOGE.tick(60)
         verifierQuitter()
