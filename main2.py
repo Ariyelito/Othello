@@ -74,6 +74,7 @@ def Jouerjeu():
 
     sonMuet = FONT.render('Son activé', True , BLANC, NOIR)
     sonMuetRect = sonMuet.get_rect()
+    sonMuet = FONT.render('Son éteint', True, BLANC, NOIR)
     son = True
 
     
@@ -98,9 +99,16 @@ def Jouerjeu():
                         if nouvellePartieRect.collidepoint((xSouris, ySouris)):
                             return True
                         if sonMuetRect.collidepoint((xSouris, ySouris)):
-                            pygame.mixer.music.pause()
-                            sonMuet = FONT.render('Son éteint', True , BLANC, NOIR)
-                            son = False
+                            if son == False :
+                                pygame.mixer.music.unpause()
+                                son = True
+                                print(son)
+                            elif son == True:
+                                pygame.mixer.music.pause()
+                                son = False
+                                print(son)
+                            #
+                            # son = False
                        
                         mouvementxy = obtenirPosition(xSouris, ySouris)
                         if mouvementxy != None and not movementValide(tableauPrincipal, tuileJoueur, mouvementxy[0],
