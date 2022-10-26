@@ -20,6 +20,12 @@ pygame.mixer.music.load(file)
 pygame.mixer.music.play(-1, 0, 6000)
 
 
+def music(): 
+    fileClick = 'ClicDeSouris.mp3'
+    pygame.mixer.init()
+    pygame.mixer.music.load(fileClick)
+    pygame.mixer.music.play(-1, 0, 6000)
+
 def main():
     global BACKGROUND, FONT, HORLOGE, Font2
     pygame.init()
@@ -54,6 +60,8 @@ def Jouerjeu():
     nouvellePartie = FONT.render('Nouvelle Partie', True, BLANC, VERT)
     nouvellePartieRect = nouvellePartie.get_rect()
     nouvellePartieRect.topright = (LARG - 8, 10)
+
+    
 
     # Loop principale du jeu
     while True:
@@ -333,6 +341,7 @@ def faireMouvement(grille, tuile, x, y, mouvement=False):
 
 
 def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
+    music()
     if tuileCouleur == TUILE_BLANCHE:
         plusDeCouleur = BLANC
     else:
@@ -377,6 +386,7 @@ def obtenirPosition(xSouris, ySouris):
                     ySouris < (y + 1) * 50 + 120:
                 return (x, y)
     return None
+  
 
 
 def ordiMouvement(grille, tuileOrdi):
