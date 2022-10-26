@@ -382,6 +382,7 @@ def faireMouvement(grille, tuile, x, y, mouvement=False):
 
 # faire les animation de changement de tuile
 def animationChangementTuile(tuileTourne, tuileCouleur, autreTuile):
+    music()
     if tuileCouleur == TUILE_BLANCHE:
         plusDeCouleur = BLANC
     else:
