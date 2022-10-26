@@ -55,6 +55,10 @@ def Jouerjeu():
     nouvellePartieRect = nouvellePartie.get_rect()
     nouvellePartieRect.topright = (LARG - 8, 10)
 
+    sonMuet = FONT.render('Son Muet', True , BLANC, NOIR)
+    sonMuetRect = sonMuet.get_rect()
+    sonMuetRect.topleft = (LARG - 10, 10)
+
     
 
     # Loop principale du jeu
@@ -106,6 +110,7 @@ def Jouerjeu():
             dessinerTableau(tableauPrincipal)
             info(tableauPrincipal, tuileJoueur, tuileOrdi, tour)
             ecran.blit(nouvellePartie, nouvellePartieRect)
+            ecran.blit(sonMuet,sonMuetRect)
             
             # faire comme si l'ordinateur réféchissait
             pause = time.time() + random.randint(5, 15) * 0.1
