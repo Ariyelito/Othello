@@ -63,7 +63,6 @@ def Jouerjeu():
 
     sonMuet = FONT.render('Son Muet', True , BLANC, NOIR)
     sonMuetRect = sonMuet.get_rect()
-    sonMuetRect.topleft = (LARG - 10, 10)
 
     
 
@@ -99,6 +98,7 @@ def Jouerjeu():
 
                 # bouton nouvelle partie
                 ecran.blit(nouvellePartie, nouvellePartieRect)
+                ecran.blit(sonMuet,sonMuetRect)
                 HORLOGE.tick(60)
                 pygame.display.update()
 
