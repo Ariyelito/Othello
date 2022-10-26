@@ -68,8 +68,9 @@ def Jouerjeu():
     nouvellePartieRect = nouvellePartie.get_rect()
     nouvellePartieRect.topright = (LARG - 8, 10)
 
-    sonMuet = FONT.render('Son Muet', True , BLANC, NOIR)
+    sonMuet = FONT.render('Son activé', True , BLANC, NOIR)
     sonMuetRect = sonMuet.get_rect()
+    son = True
 
     
 
@@ -87,6 +88,7 @@ def Jouerjeu():
             mouvementxy = None
             print('movexy')
             while mouvementxy == None:
+
                 verifierQuitter()
                 # loop jusqu'a ce que le joueur click sur un bouton.
                 for event in pygame.event.get():
@@ -94,6 +96,11 @@ def Jouerjeu():
                         xSouris, ySouris = event.pos
                         if nouvellePartieRect.collidepoint((xSouris, ySouris)):
                             return True
+                        if sonMuetRect.collidepoint((xSouris, ySouris)):
+                            pygame.mixer.music.pause()
+                            sonMuet = FONT.render('Son éteint', True , BLANC, NOIR)
+                            son = False
+                       
                         mouvementxy = obtenirPosition(xSouris, ySouris)
                         if mouvementxy != None and not movementValide(tableauPrincipal, tuileJoueur, mouvementxy[0],
                                                                       mouvementxy[1]):
